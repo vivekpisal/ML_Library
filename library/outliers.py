@@ -1,8 +1,6 @@
 import pandas as pd
 import numpy as np
 from scipy.stats import mode
-import seaborn as sns
-import matplotlib.pyplot as plt
 
 
 
@@ -12,9 +10,13 @@ def  flooring_capping(df,variable):
 	df[variable]=np.where(df[variable]<a,a,df[variable])
 	df[variable]=np.where(df[variable]>b,b,df[variable])
 
+
+
 def trimming(df,variable):
 	index = df[(df[variable] >= max(df[variable]))|(df[variable] <= df[variable])].index
 	df.drop(index, inplace=True)
+
+
 
 
 def iqr(df,variable):
@@ -24,8 +26,11 @@ def iqr(df,variable):
 	df_out = df[~((df[variable] < (Q1 - 1.5 * IQR)) |(df[variable]> (Q3 + 1.5 * IQR)))]
 	
 
+
+
 def logarithem(df,variable):
 	df[variable] = df[variable].map(lambda i: np.log(i) if i > 0 else 0) 
+
 
 
 def median(df,variable):
