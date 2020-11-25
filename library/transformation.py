@@ -41,6 +41,7 @@ def MinMaxScaler(df):
 			df[i]=np.where(df[i]==j,scale,df[i])
 
 
+
 def StandardScaler(df):
 	for i in df:
 		mean=df[i].mean()

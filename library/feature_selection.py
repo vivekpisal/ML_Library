@@ -25,7 +25,6 @@ class SelectBest:
 
 
 
-
 def RemoveCollinearity(dataset, threshold): 
     col_corr = set() # Set of all the names of correlated columns 
     corr_matrix = dataset.corr() 
@@ -35,3 +34,28 @@ def RemoveCollinearity(dataset, threshold):
                 colname = corr_matrix.columns[i]
                 col_corr.add(colname) 
     return col_corr
+
+
+
+
+def cor_selector(X, y):
+	feature_name = X.columns.tolist()
+    cor_list = []
+    # calculate the correlation with y for each feature
+    for i in X.columns.tolist():
+        cor = np.corrcoef(X[i], y)[0, 1]
+        cor_list.append(cor)
+    # replace NaN with 0
+    cor_list = [0 if np.isnan(i) else i for i in cor_list]
+    # feature name
+    cor_feature = X.iloc[:,np.argsort(np.abs(cor_list))[-100:]].columns.tolist()
+    # feature selection? 0 for not select, 1 for select
+    cor_support = [True if i in cor_feature else False for i in feature_name]
+    
+    cor_feature,cor_list,cor_support=cor_selector(X,y)
+	features=pd.DataFrame(cor_feature)
+	scores=pd.DataFrame(cor_list)
+	cor_support=pd.DataFrame(cor_support)
+	df_corr=pd.concat([features,scores,cor_support],axis=1)
+	df_corr.columns=["Features","Scores","Support"]
+	return df_corr

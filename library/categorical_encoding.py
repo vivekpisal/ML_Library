@@ -8,9 +8,9 @@ def frequency_encoding(df,feature):
 
 
 def target_guided_encoding(df,feature,target):
-	order=df.groupby([feature])[target].mean().sort_values().index()
+	order=df.groupby([feature])[target].mean().sort_values().index
 	map_dic={k:i for i,k in enumerate(order,0)}
-	df[feature]=df[feature].map(map_dic)
+	df[feature]=df[feature].map(map_dic)	
 
 
 
@@ -22,10 +22,10 @@ def mean_encoding(df,feature,target):
 
 def probability_ratio_encoding(df,feature,target):
 	order=df.groupby([feature])[target].mean()
-	prob_df=df.DataFrame(order)
+	prob_df=pd.DataFrame(order)
 	prob_df['temp']=1-prob_df[target]
 	prob_df['encoding']=prob_df[target]/prob_df['temp']
-	map_dict=prob_df['encoding'].map()
+	map_dict=prob_df['encoding'].to_dict()
 	df[feature]=df[feature].map(map_dict)
 
 
@@ -36,7 +36,7 @@ def one_hot(df,feature):
 
 def kdd_cup(df,feature,k=10):
 	lst_feature=df[feature].value_counts().sort_values(ascending=False).head(k).index
-	lst_10=list(lst_10)
+	lst_10=list(lst_feature)
 	for categories in lst_10:
 		df[categories]=np.where(df[feature]==categories,1,0)
 
